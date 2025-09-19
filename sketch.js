@@ -35,3 +35,4 @@ function ternclick(lx, ly) {
 function mouseClicked() {
   ternclick(width / 3, height / 3);
 }
+//Magnus
