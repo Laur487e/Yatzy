@@ -18,7 +18,7 @@ function draw() {
 }
 
 function terning(tal) {
-  tal = random(1, 7);
+  tal = floor(random(1, 7));
   console.log(tal);
 
   textAlign(CENTER, CENTER);
