@@ -1,46 +1,77 @@
+//Variabler for terningerne
+let tern = [0, 0, 0, 0, 0];
+let etern = [0, 0, 0, 0, 0];
+
+//Variabler for terningens størrelse
+let tx = 10;
+let ty1 = 10;
+let ty2 = 0;
+let ty3 = 0;
+let ty4 = 0;
+let ty5 = 0;
 let l = 0;
 let h = 0;
-let tern = [0, 0, 0, 0, 0];
-let tx = 10;
-let ty = 10;
+
+//Variable for status på antal slag hver spiller har slået
+let slag = 0;
 
 function setup() {
   createCanvas(400, 400);
 
   l = 50;
   h = 50;
+
+  ty2 = ty1 + h + 10;
+  ty3 = ty1 + h * 2 + 10 * 2;
+  ty4 = ty1 + h * 3 + 10 * 3;
+  ty5 = ty1 + h * 4 + 10 * 4;
 }
 
 function draw() {
   background("beige");
 
-  tegntern(tx, ty, 0);
-  tegntern(tx, ty + h * 1 + 10, 1);
-  tegntern(tx, ty + h * 2 + 10 * 2, 2);
-  tegntern(tx, ty + h * 3 + 10 * 3, 3);
-  tegntern(tx, ty + h * 4 + 10 * 4, 4);
+  tegntern(ty1, 0);
+  tegntern(ty2, 1);
+  tegntern(ty3, 2);
+  tegntern(ty4, 3);
+  tegntern(ty5, 4);
 
   rect(300, 10, 60, 20);
+  console.log(slag);
 }
 
 function slåterning(tal, n) {
   if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
-    tal = floor(random(1, 7));
+    if (etern[n] == 0) {
+      tal = floor(random(1, 7));
 
-    tern[n] = tal;
+      tern[n] = tal;
+    }
   }
 }
 
-function ternclick(lx, ly) {
-  if (mouseX > lx && mouseX < lx + l && mouseY > ly && mouseY < ly + h) {
+function antalslag() {
+  if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
+    if (slag < 3) {
+      slag = slag + 1;
+    } else {
+      etern = [0, 0, 0, 0, 0];
+      slag = 0;
+    }
   }
 }
 
-function tegntern(lx, ly, n) {
-  rect(lx, ly, l, h);
+function ternclick(ly, n) {
+  if (mouseX > tx && mouseX < tx + l && mouseY > ly && mouseY < ly + h) {
+    etern[n] = tern[n];
+  }
+}
+
+function tegntern(ly, n) {
+  rect(tx, ly, l, h);
 
   textAlign(CENTER, CENTER);
-  text(tern[n], lx + l / 2, ly + h / 2);
+  text(tern[n], tx + l / 2, ly + h / 2);
 }
 
 function mouseClicked() {
@@ -50,5 +81,13 @@ function mouseClicked() {
   slåterning(tern[3], 3);
   slåterning(tern[4], 4);
 
-  console.log(tern);
+  ternclick(ty1, 0);
+  ternclick(ty2, 1);
+  ternclick(ty3, 2);
+  ternclick(ty4, 3);
+  ternclick(ty5, 4);
+
+  antalslag();
+
+  console.log(etern);
 }
