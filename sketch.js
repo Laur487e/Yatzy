@@ -52,10 +52,9 @@ function draw() {
   console.log(slag);
 }
 
-function slåterning(tal, n) {
-  if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
-    if (etern[currentPlayer][n] == 0) {
-      tal = floor(random(1, 7));
+function terning(tal) {
+  tal = floor(random(1, 7));
+  console.log(tal);
 
       tern[currentPlayer][n] = tal;
     }
