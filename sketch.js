@@ -4,11 +4,11 @@ let currentPlayer = 0; // 0 = spiller 1, 1 = spiller 2
 //Variabler for terningerne
 let tern = [
   [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0]
+  [0, 0, 0, 0, 0],
 ];
 let etern = [
   [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0]
+  [0, 0, 0, 0, 0],
 ];
 
 //Variabler for terningens størrelse
@@ -46,7 +46,8 @@ function draw() {
   background("beige");
 
   textAlign(LEFT, TOP);
-  text(players[currentPlayer] + "s tur", 10, 10);
+  fill(0);
+  text(players[currentPlayer] + "s tur", 100, 10);
 
   tegntern(ty1, 0);
   tegntern(ty2, 1);
@@ -54,59 +55,30 @@ function draw() {
   tegntern(ty4, 3);
   tegntern(ty5, 4);
 
-  rect(kx, ky, kl, kh);
   knap();
   console.log(slag);
 }
 
-function slåterning(tal, n) {
-  if (mouseX > kx && mouseX < kx + kl && mouseY > ky && mouseY < ky + kh) {
-    if (etern[n] == 0) {
-      tal = floor(random(1, 7));
-
-      tern[n] = tal;
-    }
-  }
-}
-
-function antalslag() {
-  if (mouseX > kx && mouseX < kx + kl && mouseY > ky && mouseY < ky + kh) {
-    if (slag < 3) {
-      slag = slag + 1;
-    } else {
-      tern = [0, 0, 0, 0, 0];
-      etern = [0, 0, 0, 0, 0];
-      slag = 0;
-    }
-  }
-}
-
-function ternclick(ly, n) {
-  if (mouseX > tx && mouseX < tx + l && mouseY > ly && mouseY < ly + h) {
-    etern[n] = tern[n];
-  }
-}
-
-function tegntern(ly, n) {
-  rect(tx, ly, l, h);
-
-  textAlign(CENTER, CENTER);
-  text(tern[n], tx + l / 2, ly + h / 2);
-}
-
 function knap() {
+  fill(255);
+  rect(kx, ky, kl, kh);
   if (slag < 3) {
+    fill(0);
     text("Slå med terningerne", kx + kl / 2, ky + kh / 2);
   }
   if (slag == 3) {
+    fill(0);
     text("Tryk for at skifte spiller", kx + kl / 2, ky + kh / 2);
-  rect(300, 10, 60, 20);
-  console.log(slag);
+    console.log(slag);
+  }
+  fill(0);
+  text("Antal slag brugt: " + slag, kx + kl / 2, ky + kh * 2);
 }
 
-function terning(tal) {
-  tal = floor(random(1, 7));
-  console.log(tal);
+function slåterning(tal, n) {
+  if (mouseX > kx && mouseX < kx + kl && mouseY > ky && mouseY < ky + kh) {
+    if (etern[currentPlayer][n] == 0) {
+      tal = floor(random(1, 7));
 
       tern[currentPlayer][n] = tal;
     }
@@ -114,13 +86,17 @@ function terning(tal) {
 }
 
 function antalslag() {
-  if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
+  if (mouseX > kx && mouseX < kx + kl && mouseY > ky && mouseY < ky + kh) {
     if (slag < 3) {
       slag = slag + 1;
     } else {
+      tern = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+      ];
       etern = [
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0],
       ];
       slag = 0;
     }
@@ -129,14 +105,23 @@ function antalslag() {
 
 function ternclick(ly, n) {
   if (mouseX > tx && mouseX < tx + l && mouseY > ly && mouseY < ly + h) {
-    etern[currentPlayer][n] = tern[currentPlayer][n];
+    if (etern[currentPlayer][n] == 0) {
+      etern[currentPlayer][n] = tern[currentPlayer][n];
+    } else {
+      etern[currentPlayer][n] = 0;
+    }
   }
-  text("Antal slag brugt:" + slag, kx + kl / 2, ky + kh * 2);
 }
 
 function tegntern(ly, n) {
+  if (etern[currentPlayer][n] > 0) {
+    fill("limeGreen");
+  } else {
+    fill(255);
+  }
   rect(tx, ly, l, h);
 
+  fill(0);
   textAlign(CENTER, CENTER);
   text(tern[currentPlayer][n], tx + l / 2, ly + h / 2);
 }
@@ -156,8 +141,12 @@ function mouseClicked() {
 
   antalslag();
 
-  if (slag === 0) {
-    currentPlayer = 1 - currentPlayer;
+  if (slag == 0) {
+    if (currentPlayer == 1) {
+      currentPlayer = 0;
+    } else {
+      currentPlayer = 1;
+    }
     console.log("Nu er det " + players[currentPlayer] + "s tur");
   }
 
