@@ -12,6 +12,12 @@ let ty5 = 0;
 let l = 0;
 let h = 0;
 
+//Variabler for knappens størrelse
+let kx = 240;
+let ky = 10;
+let kl = 140;
+let kh = 20;
+
 //Variable for status på antal slag hver spiller har slået
 let slag = 0;
 
@@ -36,12 +42,13 @@ function draw() {
   tegntern(ty4, 3);
   tegntern(ty5, 4);
 
-  rect(300, 10, 60, 20);
+  rect(kx, ky, kl, kh);
+  knap();
   console.log(slag);
 }
 
 function slåterning(tal, n) {
-  if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
+  if (mouseX > kx && mouseX < kx + kl && mouseY > ky && mouseY < ky + kh) {
     if (etern[n] == 0) {
       tal = floor(random(1, 7));
 
@@ -51,10 +58,11 @@ function slåterning(tal, n) {
 }
 
 function antalslag() {
-  if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
+  if (mouseX > kx && mouseX < kx + kl && mouseY > ky && mouseY < ky + kh) {
     if (slag < 3) {
       slag = slag + 1;
     } else {
+      tern = [0, 0, 0, 0, 0];
       etern = [0, 0, 0, 0, 0];
       slag = 0;
     }
@@ -72,6 +80,16 @@ function tegntern(ly, n) {
 
   textAlign(CENTER, CENTER);
   text(tern[n], tx + l / 2, ly + h / 2);
+}
+
+function knap() {
+  if (slag < 3) {
+    text("Slå med terningerne", kx + kl / 2, ky + kh / 2);
+  }
+  if (slag == 3) {
+    text("Tryk for at skifte spiller", kx + kl / 2, ky + kh / 2);
+  }
+  text("Antal slag brugt:" + slag, kx + kl / 2, ky + kh * 2);
 }
 
 function mouseClicked() {
