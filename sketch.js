@@ -1,6 +1,15 @@
+let players = ["Spiller 1", "Spiller 2"];
+let currentPlayer = 0; // 0 = spiller 1, 1 = spiller 2
+
 //Variabler for terningerne
-let tern = [0, 0, 0, 0, 0];
-let etern = [0, 0, 0, 0, 0];
+let tern = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0]
+];
+let etern = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0]
+];
 
 //Variabler for terningens størrelse
 let tx = 10;
@@ -35,6 +44,9 @@ function setup() {
 
 function draw() {
   background("beige");
+
+  textAlign(LEFT, TOP);
+  text(players[currentPlayer] + "s tur", 10, 10);
 
   tegntern(ty1, 0);
   tegntern(ty2, 1);
@@ -88,16 +100,53 @@ function knap() {
   }
   if (slag == 3) {
     text("Tryk for at skifte spiller", kx + kl / 2, ky + kh / 2);
+  rect(300, 10, 60, 20);
+  console.log(slag);
+}
+
+function terning(tal) {
+  tal = floor(random(1, 7));
+  console.log(tal);
+
+      tern[currentPlayer][n] = tal;
+    }
+  }
+}
+
+function antalslag() {
+  if (mouseX > 300 && mouseX < 300 + 60 && mouseY > 10 && mouseY < 10 + 20) {
+    if (slag < 3) {
+      slag = slag + 1;
+    } else {
+      etern = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+      ];
+      slag = 0;
+    }
+  }
+}
+
+function ternclick(ly, n) {
+  if (mouseX > tx && mouseX < tx + l && mouseY > ly && mouseY < ly + h) {
+    etern[currentPlayer][n] = tern[currentPlayer][n];
   }
   text("Antal slag brugt:" + slag, kx + kl / 2, ky + kh * 2);
 }
 
+function tegntern(ly, n) {
+  rect(tx, ly, l, h);
+
+  textAlign(CENTER, CENTER);
+  text(tern[currentPlayer][n], tx + l / 2, ly + h / 2);
+}
+
 function mouseClicked() {
-  slåterning(tern[0], 0);
-  slåterning(tern[1], 1);
-  slåterning(tern[2], 2);
-  slåterning(tern[3], 3);
-  slåterning(tern[4], 4);
+  slåterning(tern[currentPlayer][0], 0);
+  slåterning(tern[currentPlayer][1], 1);
+  slåterning(tern[currentPlayer][2], 2);
+  slåterning(tern[currentPlayer][3], 3);
+  slåterning(tern[currentPlayer][4], 4);
 
   ternclick(ty1, 0);
   ternclick(ty2, 1);
@@ -106,6 +155,11 @@ function mouseClicked() {
   ternclick(ty5, 4);
 
   antalslag();
+
+  if (slag === 0) {
+    currentPlayer = 1 - currentPlayer;
+    console.log("Nu er det " + players[currentPlayer] + "s tur");
+  }
 
   console.log(etern);
 }
